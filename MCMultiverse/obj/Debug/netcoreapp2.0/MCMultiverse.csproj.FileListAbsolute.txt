@@ -1,0 +1,5 @@
+M:\OneDrive\Documents\Projects\Week7-Identity\MCMultiverse\obj\Debug\netcoreapp2.0\MCMultiverse.csprojResolveAssemblyReference.cache
+M:\OneDrive\Documents\Projects\Week7-Identity\MCMultiverse\obj\Debug\netcoreapp2.0\MCMultiverse.csproj.CoreCompileInputs.cache
+M:\OneDrive\Documents\Projects\Week7-Identity\MCMultiverse\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+M:\OneDrive\Documents\Projects\Week7-Identity\MCMultiverse\obj\Debug\netcoreapp2.0\MCMultiverse.AssemblyInfoInputs.cache
+M:\OneDrive\Documents\Projects\Week7-Identity\MCMultiverse\obj\Debug\netcoreapp2.0\MCMultiverse.AssemblyInfo.cs
