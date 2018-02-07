@@ -18,7 +18,7 @@ namespace MCMultiverse.Models
 
         public ServerPage()
         {
-            Create
+            
         }
     }
 }
