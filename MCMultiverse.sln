@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCMultiverse", "MCMultiverse\MCMultiverse.csproj", "{48EAA15E-AD6C-425D-A66E-AC5C0FA57AF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCMultiverse", "MCMultiverse\MCMultiverse.csproj", "{31CEB8A3-456A-441A-9993-9FF680DDBE84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{48EAA15E-AD6C-425D-A66E-AC5C0FA57AF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48EAA15E-AD6C-425D-A66E-AC5C0FA57AF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48EAA15E-AD6C-425D-A66E-AC5C0FA57AF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48EAA15E-AD6C-425D-A66E-AC5C0FA57AF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31CEB8A3-456A-441A-9993-9FF680DDBE84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31CEB8A3-456A-441A-9993-9FF680DDBE84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31CEB8A3-456A-441A-9993-9FF680DDBE84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31CEB8A3-456A-441A-9993-9FF680DDBE84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {BF6BB841-30E1-4C8F-B96C-68CCA03BBB55}
+		SolutionGuid = {69C7B9E6-4803-43D4-99C9-E4109506F836}
 	EndGlobalSection
 EndGlobal
