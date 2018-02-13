@@ -5,11 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MCMultiverse.Models;
+using MCMultiverse.Models.Application;
 
 namespace MCMultiverse.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<MCServer> MCServers { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<FavoriteServer> Favorites { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
