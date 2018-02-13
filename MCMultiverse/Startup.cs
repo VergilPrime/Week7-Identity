@@ -29,9 +29,6 @@ namespace MCMultiverse
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<MCMultiverseDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -43,7 +40,9 @@ namespace MCMultiverse
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+
+        // REMEMBER TO ADD ROLEMANAGER HERE
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -66,6 +65,32 @@ namespace MCMultiverse
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            foreach(string role in new List<string>() { "Member", "Admin" })
+            {
+                CreateRoleIfNotExists(roleManager, role);
+            }
+        }
+
+        public void CreateRoleIfNotExists(RoleManager<IdentityRole> roleManager, string role)
+        {
+            Task<bool> task = roleManager.RoleExistsAsync(role);
+
+            // Wait for an answer. (way to do this with await instead?)
+            task.Wait();
+
+            // If not,
+            if (!task.Result)
+            {
+                // New task which is creating the specified role
+                var createTask = roleManager.CreateAsync(new IdentityRole
+                {
+                    Name = role
+                });
+
+                createTask.Wait();
+
+            }
         }
     }
 }
