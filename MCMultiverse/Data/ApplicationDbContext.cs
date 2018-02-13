@@ -11,6 +11,7 @@ namespace MCMultiverse.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+
         public DbSet<MCServer> MCServers { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<FavoriteServer> Favorites { get; set; }

@@ -6,13 +6,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MCMultiverse.Models
+namespace MCMultiverse.Models.Application
 {
 
     public class MCServer
     {
-        private ApplicationDbContext _context { get; }
-
         public int Id { get; set; }
         public string Owner { get; set; }
         public string Title { get; set; }
@@ -25,14 +23,5 @@ namespace MCMultiverse.Models
         public DateTime LastPingedOnline { get; set; }
         [NotMapped]
         public List<Comment> Comments { get; set; }
-
-
-
-        public MCServer(ApplicationDbContext context)
-        {
-            _context = context;
-
-            Comments = _context.Comments.Where(comment => comment.Type == "Comment" && comment.OnId == Id).ToList();
-        }
     }
 }
