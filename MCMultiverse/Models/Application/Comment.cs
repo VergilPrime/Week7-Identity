@@ -17,6 +17,8 @@ namespace MCMultiverse.Models.Application
         public List<Comment> Replies { get; set; }
 
         // What is this a comment on? Server, Comment...
+        public MCServer ServerParent { get; set; }
+        public Comment CommentParent { get; set; }
         public string Type { get; set; }
         public int OnId { get; set; }
     }

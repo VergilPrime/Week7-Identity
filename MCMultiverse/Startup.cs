@@ -66,7 +66,7 @@ namespace MCMultiverse
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            foreach(string role in new List<string>() { "Member", "Admin" })
+            foreach (string role in new List<string>() { "Member", "Admin" })
             {
                 CreateRoleIfNotExists(roleManager, role);
             }

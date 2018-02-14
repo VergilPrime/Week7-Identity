@@ -11,40 +11,15 @@ using System;
 namespace MCMultiverse.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180214221026_MCMultiverseb2")]
+    partial class MCMultiverseb2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("MCMultiverse.Models.Application.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("CommentParentId");
-
-                    b.Property<int>("OnId");
-
-                    b.Property<int?>("ServerParentId");
-
-                    b.Property<string>("Text");
-
-                    b.Property<int>("Timestamp");
-
-                    b.Property<string>("Type");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentParentId");
-
-                    b.HasIndex("ServerParentId");
-
-                    b.ToTable("Comments");
-                });
 
             modelBuilder.Entity("MCMultiverse.Models.Application.MCServer", b =>
                 {
@@ -75,7 +50,7 @@ namespace MCMultiverse.Data.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("MCServers");
+                    b.ToTable("MCServer");
                 });
 
             modelBuilder.Entity("MCMultiverse.Models.ApplicationUser", b =>
@@ -235,17 +210,6 @@ namespace MCMultiverse.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("MCMultiverse.Models.Application.Comment", b =>
-                {
-                    b.HasOne("MCMultiverse.Models.Application.Comment", "CommentParent")
-                        .WithMany("Replies")
-                        .HasForeignKey("CommentParentId");
-
-                    b.HasOne("MCMultiverse.Models.Application.MCServer", "ServerParent")
-                        .WithMany("Comments")
-                        .HasForeignKey("ServerParentId");
                 });
 
             modelBuilder.Entity("MCMultiverse.Models.Application.MCServer", b =>

@@ -21,7 +21,6 @@ namespace MCMultiverse.Models.Application
         public DateTime Created { get; set; }
         public DateTime LastPinged { get; set; }
         public DateTime LastPingedOnline { get; set; }
-        [NotMapped]
         public List<Comment> Comments { get; set; }
     }
 }
