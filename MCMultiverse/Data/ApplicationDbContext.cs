@@ -12,10 +12,6 @@ namespace MCMultiverse.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
 
-        public DbSet<MCServer> MCServers { get; set; }
-        public DbSet<Comment> Comments { get; set; }
-        public DbSet<FavoriteServer> Favorites { get; set; }
-
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -24,9 +20,6 @@ namespace MCMultiverse.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.Entity<FavoriteServer>()
-            .HasKey(favorite => new { favorite.UserId, favorite.MCServer });
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);

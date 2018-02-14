@@ -9,13 +9,8 @@ namespace MCMultiverse.Models.Application
 {
     public class FavoriteServer
     {
-        [Key]
-        [Column(Order = 1)]
         public string UserId { get; set; }
-        [Key]
-        [Column(Order = 2)]
-        public int MCServerId { get; set; }
-        [ForeignKey("MCServerId")]
+        public int FK_MCServerId { get; set; }
         public MCServer MCServer { get; set; }
     }
 }
