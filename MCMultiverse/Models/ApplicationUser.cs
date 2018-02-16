@@ -18,5 +18,11 @@ namespace MCMultiverse.Models
         public ICollection<MCServer> Servers { get; set; }
 
         public ICollection<Vote> Votes { get; set; }
+
+        public int TotalDonations { get; set; }
+
+        public string MinecraftUserName { get; set; }
+
+        public string MinecraftUUID { get; set; }
     }
 }

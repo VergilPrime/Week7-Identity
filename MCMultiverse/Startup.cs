@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MCMultiverse.Data;
 using MCMultiverse.Models;
 using MCMultiverse.Services;
+using MCMultiverse.Models.AuthorizationRequirements;
 
 namespace MCMultiverse
 {
@@ -37,6 +38,11 @@ namespace MCMultiverse
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("OwnsServer", policy => policy.Requirements.Add(new OwnsServerRequirement(userManager, server)));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

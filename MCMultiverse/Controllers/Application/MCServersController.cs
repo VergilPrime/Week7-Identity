@@ -8,22 +8,28 @@ using Microsoft.EntityFrameworkCore;
 using MCMultiverse.Data;
 using MCMultiverse.Models.Application;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using MCMultiverse.Models;
 
 namespace MCMultiverse.Controllers.Application
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/MCServers")]
-    [Authorize]
     public class MCServersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MCServersController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _user;
+
+        public MCServersController(ApplicationDbContext context, UserManager<ApplicationUser> user)
         {
             _context = context;
+            _user = user;
         }
 
         // GET: api/MCServers
+        [AllowAnonymous]
         [HttpGet]
         public IEnumerable<MCServer> GetMCServers()
         {
@@ -31,6 +37,7 @@ namespace MCMultiverse.Controllers.Application
         }
 
         // GET: api/MCServers/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMCServer([FromRoute] int id)
         {
@@ -50,6 +57,7 @@ namespace MCMultiverse.Controllers.Application
         }
 
         // PUT: api/MCServers/5
+        [Authorize(Roles = "Admin", Policy = "OwnsServerRequirement")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMCServer([FromRoute] int id, [FromBody] MCServer mCServer)
         {

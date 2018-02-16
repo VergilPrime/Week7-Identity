@@ -8,8 +8,10 @@ namespace MCMultiverse.Models.Application
 {
     public class Vote
     {
-        public ApplicationUser ApplicationUser { get; set; }
+        public int Id { get; set; }
 
+        public ApplicationUser ApplicationUser { get; set; }
+        
         public MCServer MCServer { get; set; }
 
         public int TimeStamp { get; }

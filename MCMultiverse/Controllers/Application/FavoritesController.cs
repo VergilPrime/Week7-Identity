@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MCMultiverse.Data;
 using MCMultiverse.Models.Application;
-using Microsoft.AspNetCore.Authorization;
 
 namespace MCMultiverse.Controllers.Application
 {
     [Produces("application/json")]
     [Route("api/Favorites")]
-    [Authorize]
     public class FavoritesController : Controller
     {
         private readonly ApplicationDbContext _context;

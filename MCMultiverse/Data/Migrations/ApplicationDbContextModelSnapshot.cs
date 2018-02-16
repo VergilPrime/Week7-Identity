@@ -25,6 +25,8 @@ namespace MCMultiverse.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AuthorId");
+
                     b.Property<int?>("CommentParentId");
 
                     b.Property<int>("OnId");
@@ -33,11 +35,11 @@ namespace MCMultiverse.Data.Migrations
 
                     b.Property<string>("Text");
 
-                    b.Property<int>("Timestamp");
-
                     b.Property<string>("Type");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("CommentParentId");
 
@@ -66,27 +68,41 @@ namespace MCMultiverse.Data.Migrations
 
                     b.Property<int>("Activity");
 
-                    b.Property<DateTime>("Created");
-
                     b.Property<string>("Description");
 
-                    b.Property<DateTime>("LastPinged");
+                    b.Property<int>("LastPinged");
 
-                    b.Property<DateTime>("LastPingedOnline");
+                    b.Property<int>("LastPingedOnline");
 
                     b.Property<string>("OwnerId");
 
                     b.Property<string>("Title");
 
-                    b.Property<DateTime>("Updated");
-
-                    b.Property<int>("Votes");
+                    b.Property<int>("Updated");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
 
                     b.ToTable("MCServers");
+                });
+
+            modelBuilder.Entity("MCMultiverse.Models.Application.Vote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<int?>("MCServerId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("MCServerId");
+
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("MCMultiverse.Models.ApplicationUser", b =>
@@ -250,6 +266,10 @@ namespace MCMultiverse.Data.Migrations
 
             modelBuilder.Entity("MCMultiverse.Models.Application.Comment", b =>
                 {
+                    b.HasOne("MCMultiverse.Models.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
                     b.HasOne("MCMultiverse.Models.Application.Comment", "CommentParent")
                         .WithMany("Replies")
                         .HasForeignKey("CommentParentId");
@@ -277,6 +297,17 @@ namespace MCMultiverse.Data.Migrations
                     b.HasOne("MCMultiverse.Models.ApplicationUser", "Owner")
                         .WithMany("Servers")
                         .HasForeignKey("OwnerId");
+                });
+
+            modelBuilder.Entity("MCMultiverse.Models.Application.Vote", b =>
+                {
+                    b.HasOne("MCMultiverse.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Votes")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("MCMultiverse.Models.Application.MCServer", "MCServer")
+                        .WithMany("Votes")
+                        .HasForeignKey("MCServerId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
