@@ -1,4 +1,5 @@
 ﻿using MCMultiverse.Data;
+using MCMultiverse.Models.Application.Static;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,15 +13,20 @@ namespace MCMultiverse.Models.Application
     public class MCServer
     {
         public int Id { get; set; }
-        public string Owner { get; set; }
+        public ApplicationUser Owner { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public int Votes { get; set; }
         public int Activity { get; set; }
-        public DateTime Updated { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime LastPinged { get; set; }
-        public DateTime LastPingedOnline { get; set; }
+        public int Updated { get; set; }
+        public int Created { get; }
+        public int LastPinged { get; set; }
+        public int LastPingedOnline { get; set; }
         public ICollection<Comment> Comments { get; set; }
+        public ICollection<Vote> Votes { get; set; }
+
+        public MCServer()
+        {
+            Created = Clock.Time();
+        }
     }
 }

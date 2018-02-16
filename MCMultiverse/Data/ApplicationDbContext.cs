@@ -34,15 +34,19 @@ namespace MCMultiverse.Data
                 .HasOne(favorite => favorite.MCServer)
                 .WithMany()
                 .HasForeignKey(favorite => favorite.MCServerId);
-
+            
             builder.Entity<Favorite>()
                 .HasOne(favorite => favorite.ApplicationUser)
-                .WithMany()
+                .WithMany(user => user.Favorites)
                 .HasForeignKey(favorite => favorite.ApplicationUserId);
 
             builder.Entity<MCServer>()
                 .HasMany(server => server.Comments)
                 .WithOne(comment => comment.ServerParent);
+
+            builder.Entity<MCServer>()
+                .HasOne<ApplicationUser>(server => server.Owner)
+                .WithMany(user => user.Servers);
 
             builder.Entity<Comment>()
                 .HasMany(comment => comment.Replies)

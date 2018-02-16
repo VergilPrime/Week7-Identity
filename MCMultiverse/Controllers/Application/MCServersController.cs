@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MCMultiverse.Data;
 using MCMultiverse.Models.Application;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MCMultiverse.Controllers.Application
 {
     [Produces("application/json")]
     [Route("api/MCServers")]
+    [Authorize]
     public class MCServersController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -14,5 +14,9 @@ namespace MCMultiverse.Models
     public class ApplicationUser : IdentityUser
     {
         public ICollection<Favorite> Favorites { get; set; }
+
+        public ICollection<MCServer> Servers { get; set; }
+
+        public ICollection<Vote> Votes { get; set; }
     }
 }

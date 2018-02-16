@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MCMultiverse.Models.Application.Static;
 
 namespace MCMultiverse.Models.Application
 {
-    public class Favorite
+    public class Vote
     {
-        public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
-        public int MCServerId { get; set; }
         public MCServer MCServer { get; set; }
-        
+
+        public int TimeStamp { get; }
+
+        public Vote()
+        {
+            TimeStamp = Clock.Time();
+        }
     }
 }
