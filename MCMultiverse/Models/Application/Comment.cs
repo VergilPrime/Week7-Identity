@@ -13,8 +13,7 @@ namespace MCMultiverse.Models.Application
         public int Id { get; set; }
         public int Timestamp { get; set; }
         public string Text { get; set; }
-        [NotMapped]
-        public List<Comment> Replies { get; set; }
+        public ICollection<Comment> Replies { get; set; }
 
         // What is this a comment on? Server, Comment...
         public MCServer ServerParent { get; set; }

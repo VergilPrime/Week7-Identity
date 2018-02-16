@@ -11,9 +11,10 @@ using System;
 namespace MCMultiverse.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180215195542_MCMultiverseb6")]
+    partial class MCMultiverseb6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,11 +53,7 @@ namespace MCMultiverse.Data.Migrations
 
                     b.Property<int>("MCServerId");
 
-                    b.Property<string>("ApplicationUserId1");
-
                     b.HasKey("ApplicationUserId", "MCServerId");
-
-                    b.HasIndex("ApplicationUserId1");
 
                     b.HasIndex("MCServerId");
 
@@ -264,13 +261,9 @@ namespace MCMultiverse.Data.Migrations
             modelBuilder.Entity("MCMultiverse.Models.Application.Favorite", b =>
                 {
                     b.HasOne("MCMultiverse.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
+                        .WithMany("Favorites")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MCMultiverse.Models.ApplicationUser")
-                        .WithMany("Favorites")
-                        .HasForeignKey("ApplicationUserId1");
 
                     b.HasOne("MCMultiverse.Models.Application.MCServer", "MCServer")
                         .WithMany()
