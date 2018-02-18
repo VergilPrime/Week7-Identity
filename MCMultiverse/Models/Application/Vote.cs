@@ -8,9 +8,13 @@ namespace MCMultiverse.Models.Application
 {
     public class Vote
     {
-        public int Id { get; set; }
+        public int Id { get; }
 
         public ApplicationUser ApplicationUser { get; set; }
+
+        public string MinecraftUserName { get; set; }
+
+        public string IPAddress { get; set; }
         
         public MCServer MCServer { get; set; }
 

@@ -7,26 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MCMultiverse.Data;
 using MCMultiverse.Models.Application;
-using Microsoft.AspNetCore.Authorization;
 
 namespace MCMultiverse.Controllers
 {
-    public class MCServersController : Controller
+    public class CommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MCServersController(ApplicationDbContext context)
+        public CommentsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: MCServers
+        // GET: Comments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MCServers.ToListAsync());
+            return View(await _context.Comments.ToListAsync());
         }
 
-        // GET: MCServers/Details/5
+        // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,43 +33,39 @@ namespace MCMultiverse.Controllers
                 return NotFound();
             }
 
-            var mCServer = await _context.MCServers
+            var comment = await _context.Comments
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (mCServer == null)
+            if (comment == null)
             {
                 return NotFound();
             }
 
-            return View(mCServer);
+            return View(comment);
         }
 
-        // GET: MCServers/Create
+        // GET: Comments/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: MCServers/Create
+        // POST: Comments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Address,Activity,Updated,LastPinged,LastPingedOnline,BannerSmall,BannerSmallContentType,BannerLarge,BannerLargeContentType")] MCServer mCServer)
+        public async Task<IActionResult> Create([Bind("Id,Text,Type,OnId")] Comment comment)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(mCServer);
+                _context.Add(comment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(mCServer);
+            return View(comment);
         }
 
-        // GET: MCServers/Edit/5
-
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin",Policy = "IsOwner")]
+        // GET: Comments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,23 +73,22 @@ namespace MCMultiverse.Controllers
                 return NotFound();
             }
 
-            var mCServer = await _context.MCServers.SingleOrDefaultAsync(m => m.Id == id);
-            if (mCServer == null)
+            var comment = await _context.Comments.SingleOrDefaultAsync(m => m.Id == id);
+            if (comment == null)
             {
                 return NotFound();
             }
-            return View(mCServer);
+            return View(comment);
         }
 
-        // POST: MCServers/Edit/5
+        // POST: Comments/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin", Policy = "IsOwner")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Address,Activity,Updated,LastPinged,LastPingedOnline,BannerSmall,BannerSmallContentType,BannerLarge,BannerLargeContentType")] MCServer mCServer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Text,Type,OnId")] Comment comment)
         {
-            if (id != mCServer.Id)
+            if (id != comment.Id)
             {
                 return NotFound();
             }
@@ -103,12 +97,12 @@ namespace MCMultiverse.Controllers
             {
                 try
                 {
-                    _context.Update(mCServer);
+                    _context.Update(comment);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MCServerExists(mCServer.Id))
+                    if (!CommentExists(comment.Id))
                     {
                         return NotFound();
                     }
@@ -119,12 +113,10 @@ namespace MCMultiverse.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(mCServer);
+            return View(comment);
         }
 
-        // GET: MCServers/Delete/5
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin", Policy = "IsOwner")]
+        // GET: Comments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,31 +124,30 @@ namespace MCMultiverse.Controllers
                 return NotFound();
             }
 
-            var mCServer = await _context.MCServers
+            var comment = await _context.Comments
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (mCServer == null)
+            if (comment == null)
             {
                 return NotFound();
             }
 
-            return View(mCServer);
+            return View(comment);
         }
 
-        // POST: MCServers/Delete/5
+        // POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin", Policy = "IsOwner")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mCServer = await _context.MCServers.SingleOrDefaultAsync(m => m.Id == id);
-            _context.MCServers.Remove(mCServer);
+            var comment = await _context.Comments.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MCServerExists(int id)
+        private bool CommentExists(int id)
         {
-            return _context.MCServers.Any(e => e.Id == id);
+            return _context.Comments.Any(e => e.Id == id);
         }
     }
 }

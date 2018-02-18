@@ -7,26 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MCMultiverse.Data;
 using MCMultiverse.Models.Application;
-using Microsoft.AspNetCore.Authorization;
 
 namespace MCMultiverse.Controllers
 {
-    public class MCServersController : Controller
+    public class ImagesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MCServersController(ApplicationDbContext context)
+        public ImagesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: MCServers
+        // GET: Images
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MCServers.ToListAsync());
+            return View(await _context.Images.ToListAsync());
         }
 
-        // GET: MCServers/Details/5
+        // GET: Images/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,43 +33,39 @@ namespace MCMultiverse.Controllers
                 return NotFound();
             }
 
-            var mCServer = await _context.MCServers
+            var image = await _context.Images
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (mCServer == null)
+            if (image == null)
             {
                 return NotFound();
             }
 
-            return View(mCServer);
+            return View(image);
         }
 
-        // GET: MCServers/Create
+        // GET: Images/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: MCServers/Create
+        // POST: Images/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Address,Activity,Updated,LastPinged,LastPingedOnline,BannerSmall,BannerSmallContentType,BannerLarge,BannerLargeContentType")] MCServer mCServer)
+        public async Task<IActionResult> Create([Bind("Id,Data,DataContentType")] Image image)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(mCServer);
+                _context.Add(image);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(mCServer);
+            return View(image);
         }
 
-        // GET: MCServers/Edit/5
-
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin",Policy = "IsOwner")]
+        // GET: Images/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,23 +73,22 @@ namespace MCMultiverse.Controllers
                 return NotFound();
             }
 
-            var mCServer = await _context.MCServers.SingleOrDefaultAsync(m => m.Id == id);
-            if (mCServer == null)
+            var image = await _context.Images.SingleOrDefaultAsync(m => m.Id == id);
+            if (image == null)
             {
                 return NotFound();
             }
-            return View(mCServer);
+            return View(image);
         }
 
-        // POST: MCServers/Edit/5
+        // POST: Images/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin", Policy = "IsOwner")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Address,Activity,Updated,LastPinged,LastPingedOnline,BannerSmall,BannerSmallContentType,BannerLarge,BannerLargeContentType")] MCServer mCServer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Data,DataContentType")] Image image)
         {
-            if (id != mCServer.Id)
+            if (id != image.Id)
             {
                 return NotFound();
             }
@@ -103,12 +97,12 @@ namespace MCMultiverse.Controllers
             {
                 try
                 {
-                    _context.Update(mCServer);
+                    _context.Update(image);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MCServerExists(mCServer.Id))
+                    if (!ImageExists(image.Id))
                     {
                         return NotFound();
                     }
@@ -119,12 +113,10 @@ namespace MCMultiverse.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(mCServer);
+            return View(image);
         }
 
-        // GET: MCServers/Delete/5
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin", Policy = "IsOwner")]
+        // GET: Images/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,31 +124,30 @@ namespace MCMultiverse.Controllers
                 return NotFound();
             }
 
-            var mCServer = await _context.MCServers
+            var image = await _context.Images
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (mCServer == null)
+            if (image == null)
             {
                 return NotFound();
             }
 
-            return View(mCServer);
+            return View(image);
         }
 
-        // POST: MCServers/Delete/5
+        // POST: Images/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin", Policy = "IsOwner")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mCServer = await _context.MCServers.SingleOrDefaultAsync(m => m.Id == id);
-            _context.MCServers.Remove(mCServer);
+            var image = await _context.Images.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Images.Remove(image);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MCServerExists(int id)
+        private bool ImageExists(int id)
         {
-            return _context.MCServers.Any(e => e.Id == id);
+            return _context.Images.Any(e => e.Id == id);
         }
     }
 }

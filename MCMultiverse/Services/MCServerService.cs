@@ -16,9 +16,9 @@ namespace MCMultiverse.Services
             _context = context;
         }
 
-        public ICollection<MCServer> GetServers(int page, int count, string filter)
+        public IQueryable<MCServer> GetServers(int page, int count, string filter)
         {
-            return (ICollection<MCServer>)_context.MCServers.OrderByDescending(server => server.Updated).Skip((page - 1) * count).Take(count);
+            return _context.MCServers.OrderByDescending(server => server.Updated).Skip((page - 1) * count).Take(count);
         }
     }
 }

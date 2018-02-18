@@ -11,7 +11,14 @@
     <hr />
     <dl class="dl-horizontal">
         <dd>
-            @Html.DisplayFor(model => model.BannerLarge)
+            @if(Model.BannerLarge != null)
+            {
+                @Html.DisplayFor(model => model.BannerLarge)
+            }
+            else
+            {
+                <img src="http://via.placeholder.com/468x60"/>
+            }
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Title)

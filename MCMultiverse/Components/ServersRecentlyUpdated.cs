@@ -20,7 +20,7 @@ namespace MCMultiverse.Components
 
         public IViewComponentResult Invoke(int page, int count, string filter)
         {
-            ICollection<MCServer> mCServers = _mCServerService.GetServers(page, count, filter);
+            IQueryable<MCServer> mCServers = _mCServerService.GetServers(page, count, filter);
 
             return View(mCServers);
         }

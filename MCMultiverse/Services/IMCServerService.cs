@@ -8,6 +8,6 @@ namespace MCMultiverse.Services
 {
     public interface IMCServerService
     {
-        ICollection<MCServer> GetServers(int page, int count, string filter);
+        IQueryable<MCServer> GetServers(int page, int count, string filter);
     }
 }

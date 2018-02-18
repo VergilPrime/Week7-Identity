@@ -1,9 +1,5 @@
 ﻿@model IEnumerable<MCMultiverse.Models.Application.MCServer>
 
-@{
-    ViewData["Title"] = "Index";
-}
-
 <h2>Servers</h2>
 
 <p>
@@ -47,7 +43,14 @@
                     @Html.DisplayFor(modelItem => item.LastPingedOnline)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.BannerSmall)
+                    @if (item.BannerSmall != null)
+                    {
+                        @Html.DisplayFor(itemModel => item.BannerLarge)
+                    }
+                    else
+                    {
+                        <img src="http://via.placeholder.com/468x60" />
+                    }
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
