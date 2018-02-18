@@ -1,4 +1,5 @@
 ﻿using MCMultiverse.Data;
+using MCMultiverse.Models.Application.Static;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,27 +7,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MCMultiverse.Models
+namespace MCMultiverse.Models.Application
 {
     public class Comment
     {
-        private ApplicationDbContext _context { get; }
-        
+        public ApplicationUser Author { get; set; }
         public int Id { get; set; }
-        public int Timestamp { get; set; }
+        public int TimeStamp { get; }
         public string Text { get; set; }
-        [NotMapped]
-        public List<Comment> Replies { get; set; }
+        public ICollection<Comment> Replies { get; set; }
 
         // What is this a comment on? Server, Comment...
+        public MCServer ServerParent { get; set; }
+        public Comment CommentParent { get; set; }
         public string Type { get; set; }
         public int OnId { get; set; }
 
-        public Comment(ApplicationDbContext context)
+        public Comment()
         {
-            _context = context;
-
-            Replies = _context.Comments.Where(comment => comment.Type == "Comment" && comment.OnId == Id).ToList();
+            TimeStamp = Clock.Time();
         }
     }
 }

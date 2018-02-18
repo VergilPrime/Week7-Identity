@@ -6,21 +6,23 @@ using System.Threading.Tasks;
 using MCMultiverse.Data;
 using MCMultiverse.Models.Application;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MCMultiverse.Models
 {
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-        public ApplicationDbContext _context { get; }
+        public ICollection<Favorite> Favorites { get; set; }
 
-        public List<FavoriteServer> Favorites { get; set; }
+        public ICollection<MCServer> Servers { get; set; }
 
-        public ApplicationUser(ApplicationDbContext context)
-        {
-            _context = context;
+        public ICollection<Vote> Votes { get; set; }
 
-            Favorites = _context.Favorites.Where(favorite => favorite.UserId == Id).ToList();
-        }
+        public int TotalDonations { get; set; }
+
+        public string MinecraftUserName { get; set; }
+
+        public string MinecraftUUID { get; set; }
     }
 }
