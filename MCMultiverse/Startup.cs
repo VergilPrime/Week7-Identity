@@ -35,7 +35,7 @@ namespace MCMultiverse
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-
+            services.AddSingleton<IMCServerService, MCServerService>();
             services.AddMvc();
         }
 

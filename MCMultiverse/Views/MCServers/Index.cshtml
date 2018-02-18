@@ -4,5 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-@await Component.InvokeAsync("ServersRecentlyUpdated", 1, 20, "updated");
-
+<vc:servers-recently-updated page="1"
+                           count="20"
+                           filter="updated">
+</vc:servers-recently-updated>
+<div>
+    @await Component.InvokeAsync("ServersRecentlyUpdated", new { page = 1, count = 20, filter = "updated" });
+</div>

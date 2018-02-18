@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace MCMultiverse.Components
 {
+    [ViewComponent]
     public class ServersRecentlyUpdated : ViewComponent
     {
         private readonly IMCServerService _mCServerService;
@@ -17,7 +18,7 @@ namespace MCMultiverse.Components
             _mCServerService = mCServerService;
         }
 
-        public IViewComponentResult InvokeAsync(int page, int count, string filter)
+        public IViewComponentResult Invoke(int page, int count, string filter)
         {
             ICollection<MCServer> mCServers = _mCServerService.GetServers(page, count, filter);
 
