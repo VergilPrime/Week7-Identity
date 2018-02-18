@@ -1,0 +1,8 @@
+﻿@model IEnumerable<MCMultiverse.Models.Application.MCServer>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@await Component.InvokeAsync("ServersRecentlyUpdated", 1, 20, "updated");
+

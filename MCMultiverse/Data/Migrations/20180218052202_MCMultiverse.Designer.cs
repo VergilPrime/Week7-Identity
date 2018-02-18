@@ -11,9 +11,10 @@ using System;
 namespace MCMultiverse.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180218052202_MCMultiverse")]
+    partial class MCMultiverse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,8 +68,6 @@ namespace MCMultiverse.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Activity");
-
-                    b.Property<string>("Address");
 
                     b.Property<string>("BannerLarge");
 
