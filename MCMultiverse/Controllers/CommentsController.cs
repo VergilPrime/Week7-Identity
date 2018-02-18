@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MCMultiverse.Data;
 using MCMultiverse.Models.Application;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MCMultiverse.Controllers
 {
@@ -43,17 +44,12 @@ namespace MCMultiverse.Controllers
             return View(comment);
         }
 
-        // GET: Comments/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         // POST: Comments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Id,Text,Type,OnId")] Comment comment)
         {
             if (ModelState.IsValid)
@@ -65,27 +61,12 @@ namespace MCMultiverse.Controllers
             return View(comment);
         }
 
-        // GET: Comments/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var comment = await _context.Comments.SingleOrDefaultAsync(m => m.Id == id);
-            if (comment == null)
-            {
-                return NotFound();
-            }
-            return View(comment);
-        }
-
         // POST: Comments/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin", Policy = "IsCommenter")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Text,Type,OnId")] Comment comment)
         {
             if (id != comment.Id)
@@ -116,25 +97,8 @@ namespace MCMultiverse.Controllers
             return View(comment);
         }
 
-        // GET: Comments/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var comment = await _context.Comments
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (comment == null)
-            {
-                return NotFound();
-            }
-
-            return View(comment);
-        }
-
         // POST: Comments/Delete/5
+        [Authorize(Roles = "Admin", Policy = "IsCommenter")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

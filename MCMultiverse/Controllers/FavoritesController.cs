@@ -7,51 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MCMultiverse.Data;
 using MCMultiverse.Models.Application;
+using MCMultiverse.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace MCMultiverse.Controllers
 {
     public class FavoritesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public FavoritesController(ApplicationDbContext context)
+        public FavoritesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Favorites
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Favorites.Include(f => f.ApplicationUser).Include(f => f.MCServer);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+
+            var applicationDbContext = _context.Favorites.Include(f => f.ApplicationUser).Where(f => f.ApplicationUser == user).Include(f => f.MCServer);
             return View(await applicationDbContext.ToListAsync());
-        }
-
-        // GET: Favorites/Details/5
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var favorite = await _context.Favorites
-                .Include(f => f.ApplicationUser)
-                .Include(f => f.MCServer)
-                .SingleOrDefaultAsync(m => m.ApplicationUserId == id);
-            if (favorite == null)
-            {
-                return NotFound();
-            }
-
-            return View(favorite);
-        }
-
-        // GET: Favorites/Create
-        public IActionResult Create()
-        {
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["MCServerId"] = new SelectList(_context.MCServers, "Id", "Id");
-            return View();
         }
 
         // POST: Favorites/Create
@@ -59,108 +37,26 @@ namespace MCMultiverse.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ApplicationUserId,MCServerId")] Favorite favorite)
+        public async Task<IActionResult> Create(int mCServerId)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(favorite);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", favorite.ApplicationUserId);
-            ViewData["MCServerId"] = new SelectList(_context.MCServers, "Id", "Id", favorite.MCServerId);
-            return View(favorite);
-        }
+            string userId = _userManager.GetUserId(User);
 
-        // GET: Favorites/Edit/5
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var favorite = await _context.Favorites.SingleOrDefaultAsync(m => m.ApplicationUserId == id);
-            if (favorite == null)
-            {
-                return NotFound();
-            }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", favorite.ApplicationUserId);
-            ViewData["MCServerId"] = new SelectList(_context.MCServers, "Id", "Id", favorite.MCServerId);
-            return View(favorite);
-        }
-
-        // POST: Favorites/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ApplicationUserId,MCServerId")] Favorite favorite)
-        {
-            if (id != favorite.ApplicationUserId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(favorite);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!FavoriteExists(favorite.ApplicationUserId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", favorite.ApplicationUserId);
-            ViewData["MCServerId"] = new SelectList(_context.MCServers, "Id", "Id", favorite.MCServerId);
-            return View(favorite);
-        }
-
-        // GET: Favorites/Delete/5
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var favorite = await _context.Favorites
-                .Include(f => f.ApplicationUser)
-                .Include(f => f.MCServer)
-                .SingleOrDefaultAsync(m => m.ApplicationUserId == id);
-            if (favorite == null)
-            {
-                return NotFound();
-            }
-
-            return View(favorite);
+            _context.Favorites.Add(new Favorite() { ApplicationUserId = userId, MCServerId = mCServerId});
+            await _context.SaveChangesAsync();
+            return View();
         }
 
         // POST: Favorites/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int mCServerId)
         {
-            var favorite = await _context.Favorites.SingleOrDefaultAsync(m => m.ApplicationUserId == id);
+            string userId = _userManager.GetUserId(User);
+
+            Favorite favorite = await _context.Favorites.SingleOrDefaultAsync(m => m.ApplicationUserId == userId && m.MCServerId == mCServerId);
             _context.Favorites.Remove(favorite);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool FavoriteExists(string id)
-        {
-            return _context.Favorites.Any(e => e.ApplicationUserId == id);
+            return View();
         }
     }
 }

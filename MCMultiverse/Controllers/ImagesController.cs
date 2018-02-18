@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MCMultiverse.Data;
 using MCMultiverse.Models.Application;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MCMultiverse.Controllers
 {
@@ -25,35 +26,12 @@ namespace MCMultiverse.Controllers
             return View(await _context.Images.ToListAsync());
         }
 
-        // GET: Images/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var image = await _context.Images
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (image == null)
-            {
-                return NotFound();
-            }
-
-            return View(image);
-        }
-
-        // GET: Images/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         // POST: Images/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin", Policy = "IsOwner")]
         public async Task<IActionResult> Create([Bind("Id,Data,DataContentType")] Image image)
         {
             if (ModelState.IsValid)
@@ -65,78 +43,10 @@ namespace MCMultiverse.Controllers
             return View(image);
         }
 
-        // GET: Images/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var image = await _context.Images.SingleOrDefaultAsync(m => m.Id == id);
-            if (image == null)
-            {
-                return NotFound();
-            }
-            return View(image);
-        }
-
-        // POST: Images/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Data,DataContentType")] Image image)
-        {
-            if (id != image.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(image);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ImageExists(image.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(image);
-        }
-
-        // GET: Images/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var image = await _context.Images
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (image == null)
-            {
-                return NotFound();
-            }
-
-            return View(image);
-        }
-
         // POST: Images/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin", Policy = "IsOwner")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var image = await _context.Images.SingleOrDefaultAsync(m => m.Id == id);
