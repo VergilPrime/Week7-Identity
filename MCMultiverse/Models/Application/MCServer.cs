@@ -21,6 +21,8 @@ namespace MCMultiverse.Models.Application
         public int Created { get; }
         public int LastPinged { get; set; }
         public int LastPingedOnline { get; set; }
+        public string BannerSmall { get; set; }
+        public string BannerLarge { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Vote> Votes { get; set; }
 

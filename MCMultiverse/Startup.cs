@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MCMultiverse.Data;
 using MCMultiverse.Models;
 using MCMultiverse.Services;
-using MCMultiverse.Models.AuthorizationRequirements;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MCMultiverse
 {
@@ -41,7 +41,9 @@ namespace MCMultiverse
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("OwnsServer", policy => policy.Requirements.Add(new OwnsServerRequirement(userManager, server)));
+                options.AddPolicy("IsDonor", policy => policy.RequireClaim("DonorRank"));
+
+                options.AddPolicy("IsDonorTier1", policy => policy.RequireClaim("DonorRank", "1"));
             });
         }
 
@@ -72,10 +74,10 @@ namespace MCMultiverse
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            foreach (string role in new List<string>() { "Member", "Admin" })
-            {
-                CreateRoleIfNotExists(roleManager, role);
-            }
+            //foreach (string role in new List<string>() { "Member", "Admin" })
+            //{
+            //    CreateRoleIfNotExists(roleManager, role);
+            //}
         }
 
         public void CreateRoleIfNotExists(RoleManager<IdentityRole> roleManager, string role)
