@@ -4,10 +4,56 @@
     ViewData["Title"] = "Index";
 }
 
-<vc:servers-recently-updated page="1"
-                           count="20"
-                           filter="updated">
-</vc:servers-recently-updated>
-<div>
-    @await Component.InvokeAsync("ServersRecentlyUpdated", new { page = 1, count = 20, filter = "updated" });
-</div>
+<h2>Servers</h2>
+
+<p>
+    <a asp-action="Create">Add Your Server</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Activity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Updated)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastPingedOnline)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BannerSmall)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Activity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Updated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastPingedOnline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BannerSmall)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace MCMultiverse.Data.Migrations
+namespace MCMultiverse.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -61,6 +61,24 @@ namespace MCMultiverse.Data.Migrations
                     b.ToTable("Favorites");
                 });
 
+            modelBuilder.Entity("MCMultiverse.Models.Application.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<byte[]>("Data");
+
+                    b.Property<string>("DataContentType");
+
+                    b.Property<int?>("MCServerId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MCServerId");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("MCMultiverse.Models.Application.MCServer", b =>
                 {
                     b.Property<int>("Id")
@@ -70,9 +88,13 @@ namespace MCMultiverse.Data.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<string>("BannerLarge");
+                    b.Property<byte[]>("BannerLarge");
 
-                    b.Property<string>("BannerSmall");
+                    b.Property<string>("BannerLargeContentType");
+
+                    b.Property<byte[]>("BannerSmall");
+
+                    b.Property<string>("BannerSmallContentType");
 
                     b.Property<string>("Description");
 
@@ -302,6 +324,13 @@ namespace MCMultiverse.Data.Migrations
                         .WithMany()
                         .HasForeignKey("MCServerId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MCMultiverse.Models.Application.Image", b =>
+                {
+                    b.HasOne("MCMultiverse.Models.Application.MCServer", "MCServer")
+                        .WithMany("Images")
+                        .HasForeignKey("MCServerId");
                 });
 
             modelBuilder.Entity("MCMultiverse.Models.Application.MCServer", b =>

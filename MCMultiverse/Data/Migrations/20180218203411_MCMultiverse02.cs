@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace MCMultiverse.Data.Migrations
+namespace MCMultiverse.Migrations
 {
-    public partial class MCMultiverse03 : Migration
+    public partial class MCMultiverse02 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

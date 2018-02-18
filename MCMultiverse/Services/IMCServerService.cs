@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MCMultiverse.Services
 {
-    interface IMCServerService
+    public interface IMCServerService
     {
         ICollection<MCServer> GetServers(int page, int count, string filter);
     }

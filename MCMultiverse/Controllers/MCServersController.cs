@@ -7,11 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MCMultiverse.Data;
 using MCMultiverse.Models.Application;
-using Microsoft.AspNetCore.Authorization;
 
 namespace MCMultiverse.Controllers
 {
-    [Authorize]
     public class MCServersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,14 +20,12 @@ namespace MCMultiverse.Controllers
         }
 
         // GET: MCServers
-        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.MCServers.ToListAsync());
         }
 
         // GET: MCServers/Details/5
-        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -58,7 +54,7 @@ namespace MCMultiverse.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Activity,Updated,LastPinged,LastPingedOnline,BannerSmall,BannerLarge")] MCServer mCServer)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,Address,Activity,Updated,LastPinged,LastPingedOnline,BannerSmall,BannerSmallContentType,BannerLarge,BannerLargeContentType")] MCServer mCServer)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +86,7 @@ namespace MCMultiverse.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Activity,Updated,LastPinged,LastPingedOnline,BannerSmall,BannerLarge")] MCServer mCServer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Address,Activity,Updated,LastPinged,LastPingedOnline,BannerSmall,BannerSmallContentType,BannerLarge,BannerLargeContentType")] MCServer mCServer)
         {
             if (id != mCServer.Id)
             {

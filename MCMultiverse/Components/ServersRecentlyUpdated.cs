@@ -13,7 +13,7 @@ namespace MCMultiverse.Components
     {
         private readonly IMCServerService _mCServerService;
 
-        public ServersRecentlyUpdated(MCServerService mCServerService)
+        public ServersRecentlyUpdated(IMCServerService mCServerService)
         {
             _mCServerService = mCServerService;
         }

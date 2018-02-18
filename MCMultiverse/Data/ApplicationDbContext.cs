@@ -15,6 +15,7 @@ namespace MCMultiverse.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Vote> Votes { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -54,6 +55,10 @@ namespace MCMultiverse.Data
             builder.Entity<MCServer>()
                 .HasMany(server => server.Comments)
                 .WithOne(comment => comment.ServerParent);
+
+            builder.Entity<MCServer>()
+                .HasMany(server => server.Images)
+                .WithOne(image => image.MCServer);
 
             builder.Entity<MCServer>()
                 .HasOne<ApplicationUser>(server => server.Owner)

@@ -3,7 +3,6 @@ M:\OneDrive\Documents\Projects\Week7-Identity\MCMultiverse\bin\Debug\netcoreapp2
 M:\OneDrive\Documents\Projects\Week7-Identity\MCMultiverse\bin\Debug\netcoreapp2.0\MCMultiverse.runtimeconfig.dev.json
 M:\OneDrive\Documents\Projects\Week7-Identity\MCMultiverse\bin\Debug\netcoreapp2.0\MCMultiverse.dll
 M:\OneDrive\Documents\Projects\Week7-Identity\MCMultiverse\bin\Debug\netcoreapp2.0\MCMultiverse.pdb
-M:\OneDrive\Documents\Projects\Week7-Identity\MCMultiverse\obj\Debug\netcoreapp2.0\MCMultiverse.csprojResolveAssemblyReference.cache
 M:\OneDrive\Documents\Projects\Week7-Identity\MCMultiverse\obj\Debug\netcoreapp2.0\MCMultiverse.csproj.CoreCompileInputs.cache
 M:\OneDrive\Documents\Projects\Week7-Identity\MCMultiverse\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
 M:\OneDrive\Documents\Projects\Week7-Identity\MCMultiverse\obj\Debug\netcoreapp2.0\MCMultiverse.AssemblyInfoInputs.cache
