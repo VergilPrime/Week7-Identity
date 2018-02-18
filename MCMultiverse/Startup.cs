@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using MCMultiverse.Data;
 using MCMultiverse.Models;
 using MCMultiverse.Services;
-using Microsoft.AspNetCore.Authorization;
 
 namespace MCMultiverse
 {
@@ -38,24 +37,15 @@ namespace MCMultiverse
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("IsDonor", policy => policy.RequireClaim("DonorRank"));
-
-                options.AddPolicy("IsDonorTier1", policy => policy.RequireClaim("DonorRank", "1"));
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-
-        // REMEMBER TO ADD ROLEMANAGER HERE
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<IdentityRole> roleManager)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
+                app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
             else
@@ -73,32 +63,6 @@ namespace MCMultiverse
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            //foreach (string role in new List<string>() { "Member", "Admin" })
-            //{
-            //    CreateRoleIfNotExists(roleManager, role);
-            //}
-        }
-
-        public void CreateRoleIfNotExists(RoleManager<IdentityRole> roleManager, string role)
-        {
-            Task<bool> task = roleManager.RoleExistsAsync(role);
-
-            // Wait for an answer. (way to do this with await instead?)
-            task.Wait();
-
-            // If not,
-            if (!task.Result)
-            {
-                // New task which is creating the specified role
-                var createTask = roleManager.CreateAsync(new IdentityRole
-                {
-                    Name = role
-                });
-
-                createTask.Wait();
-
-            }
         }
     }
 }
