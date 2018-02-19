@@ -226,9 +226,14 @@ namespace MCMultiverse.Controllers
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    //await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                    //await _userManager.AddClaimAsync(user, new Claim("DonorRank", "3", "integer"));
+                    await _userManager.AddClaimAsync(user, new Claim("TotalDonations", "0", ClaimValueTypes.Integer));
+
+                    await _userManager.AddToRoleAsync(user, "Member");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");

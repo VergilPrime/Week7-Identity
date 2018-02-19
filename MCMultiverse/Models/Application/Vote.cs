@@ -8,7 +8,7 @@ namespace MCMultiverse.Models.Application
 {
     public class Vote
     {
-        public int Id { get; }
+        public int Id { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
 

@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MCMultiverse.Data;
 using MCMultiverse.Models;
 using MCMultiverse.Services;
+using MCMultiverse.Authorization.Requirements;
 
 namespace MCMultiverse
 {
@@ -37,6 +38,23 @@ namespace MCMultiverse
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IMCServerService, MCServerService>();
             services.AddMvc();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsOwner", policy => policy.RequireClaim("DonorRank"));
+
+                options.AddPolicy("IsCommenter", policy => policy.RequireClaim("DonorRank"));
+
+                options.AddPolicy("IsDonor", policy => policy.RequireClaim("DonorRank"));
+
+                options.AddPolicy("Donor1", policy =>
+                    policy.Requirements.Add(new DonorRequirement(1)));
+            });
+
+            services.AddAuthentication(options =>
+            {
+                
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +86,10 @@ namespace MCMultiverse
             {
                 CreateRoleIfNotExists(roleManager, role);
             }
+
+            Microsoft.AspNetCore.Claims
+
+
         }
 
         public void CreateRoleIfNotExists(RoleManager<IdentityRole> roleManager, string role)

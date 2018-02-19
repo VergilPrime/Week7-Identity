@@ -9,9 +9,11 @@ using MCMultiverse.Data;
 using MCMultiverse.Models.Application;
 using MCMultiverse.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MCMultiverse.Controllers
 {
+    [Authorize]
     public class FavoritesController : Controller
     {
         private readonly ApplicationDbContext _context;
