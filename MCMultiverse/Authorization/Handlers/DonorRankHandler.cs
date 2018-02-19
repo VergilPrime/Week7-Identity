@@ -16,11 +16,11 @@ namespace MCMultiverse.Authorization.Handlers
             {
                 int userRank = Int32.Parse(context.User.FindFirst(c => c.Type == "DonorRank").Value);
 
-                if (requirement.DonorRank == null)
+                if (requirement.DonorRank == 0)
                 {
                     context.Succeed(requirement);
                 }
-                else if (userRank <= requirement.DonorRank)
+                else if (userRank <= requirement.DonorRank & userRank != 0)
                 {
                     context.Succeed(requirement);
                 }

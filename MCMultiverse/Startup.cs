@@ -87,8 +87,6 @@ namespace MCMultiverse
                 CreateRoleIfNotExists(roleManager, role);
             }
 
-            Microsoft.AspNetCore.Claims
-
 
         }
 
