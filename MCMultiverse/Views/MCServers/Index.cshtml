@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Servers";
+}
+
+@*<vc:servers-recently-updated page="1"
+                             count="1"
+                             filter="updated">
+</vc:servers-recently-updated>*@
+<div>
+    @await Component.InvokeAsync("ServersRecentlyUpdated", new { page = 1, count = 1, filter = "updated" })
+</div>

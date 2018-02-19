@@ -15,6 +15,7 @@ namespace MCMultiverse.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Vote> Votes { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -35,11 +36,38 @@ namespace MCMultiverse.Data
                 .HasOne(favorite => favorite.MCServer)
                 .WithMany()
                 .HasForeignKey(favorite => favorite.MCServerId);
-            
+
             builder.Entity<Favorite>()
                 .HasOne(favorite => favorite.ApplicationUser)
                 .WithMany(user => user.Favorites)
                 .HasForeignKey(favorite => favorite.ApplicationUserId);
+
+
+            builder.Entity<Vote>()
+                .HasOne(vote => vote.ApplicationUser)
+                .WithMany(user => user.Votes);
+
+            builder.Entity<Vote>()
+                .HasOne(vote => vote.MCServer)
+                .WithMany(server => server.Votes);
+
+
+            builder.Entity<MCServer>()
+                .HasMany(server => server.Comments)
+                .WithOne(comment => comment.ServerParent);
+
+            builder.Entity<MCServer>()
+                .HasMany(server => server.Images)
+                .WithOne(image => image.MCServer);
+
+            builder.Entity<MCServer>()
+                .HasOne<ApplicationUser>(server => server.Owner)
+                .WithMany(user => user.Servers);
+
+
+            builder.Entity<Comment>()
+                .HasMany(comment => comment.Replies)
+                .WithOne(comment => comment.CommentParent);
         }
     }
 }

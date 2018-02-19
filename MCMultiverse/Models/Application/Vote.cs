@@ -11,6 +11,10 @@ namespace MCMultiverse.Models.Application
         public int Id { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
+
+        public string MinecraftUserName { get; set; }
+
+        public string IPAddress { get; set; }
         
         public MCServer MCServer { get; set; }
 

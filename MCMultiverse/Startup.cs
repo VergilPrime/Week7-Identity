@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MCMultiverse.Data;
 using MCMultiverse.Models;
 using MCMultiverse.Services;
-using Microsoft.AspNetCore.Authorization;
+using MCMultiverse.Authorization.Requirements;
 
 namespace MCMultiverse
 {
@@ -36,26 +36,34 @@ namespace MCMultiverse
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-
+            services.AddTransient<IMCServerService, MCServerService>();
             services.AddMvc();
 
             services.AddAuthorization(options =>
             {
+                options.AddPolicy("IsOwner", policy => policy.RequireClaim("DonorRank"));
+
+                options.AddPolicy("IsCommenter", policy => policy.RequireClaim("DonorRank"));
+
                 options.AddPolicy("IsDonor", policy => policy.RequireClaim("DonorRank"));
 
-                options.AddPolicy("IsDonorTier1", policy => policy.RequireClaim("DonorRank", "1"));
+                options.AddPolicy("Donor1", policy =>
+                    policy.Requirements.Add(new DonorRequirement(1)));
+            });
+
+            services.AddAuthentication(options =>
+            {
+                
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-
-        // REMEMBER TO ADD ROLEMANAGER HERE
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
+                app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
             else
@@ -74,10 +82,12 @@ namespace MCMultiverse
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //foreach (string role in new List<string>() { "Member", "Admin" })
-            //{
-            //    CreateRoleIfNotExists(roleManager, role);
-            //}
+            foreach (string role in new List<string>() { "Member", "Admin" })
+            {
+                CreateRoleIfNotExists(roleManager, role);
+            }
+
+
         }
 
         public void CreateRoleIfNotExists(RoleManager<IdentityRole> roleManager, string role)

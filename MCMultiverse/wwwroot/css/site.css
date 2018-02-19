@@ -10,20 +10,15 @@
     padding-right: 15px;
 }
 
-/* Navbar */
-.navbar {
-    background-image: url('../images/blue_clay.png');
-}
-
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;
     line-height: 1.4;
 }
 
-.carousel-inner > .item > img {
-    height: 360px;
-    margin: 0 auto;
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
 }
 
 /* QR code generator */
