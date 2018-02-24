@@ -34,6 +34,14 @@
     }
 }
 
-div img {
-    width: 100%;
+@media screen and (max-width: 467px){
+    .server-list {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 468px){
+    .server-list {
+        width: 468px;
+    }
 }

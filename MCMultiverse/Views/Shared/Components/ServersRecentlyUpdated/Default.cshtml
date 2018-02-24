@@ -9,7 +9,7 @@
 <ul>
     @foreach (var item in Model)
     {
-        <li class="container">
+        <li class="container, server-list">
             <div class="row">
                 <div class="col-sm-12">
                     <a asp-controller="MCServers" asp-action="Details" asp-route-id="@item.Id">
@@ -25,10 +25,10 @@
                 </div>
             </div>
             <div>
-                <div class="col-sm-3 col-xs-2">{Rank}</div>
-                <div class="col-sm-3 col-xs-6">@Html.DisplayFor(modelItem => item.Title)</div>
-                <div class="col-sm-3 col-xs-2">@Html.DisplayFor(modelItem => item.Activity)</div>
-                <div class="col-sm-3 col-xs-2">{Players}</div>
+                <div class="col-xs-2">{Rank}</div>
+                <div class="col-xs-6">@Html.DisplayFor(modelItem => item.Title)</div>
+                <div class="col-xs-2">@Html.DisplayFor(modelItem => item.Activity)</div>
+                <div class="col-xs-2">{Players}</div>
             </div>
         </li>
     }

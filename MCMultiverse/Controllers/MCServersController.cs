@@ -8,16 +8,25 @@ using Microsoft.EntityFrameworkCore;
 using MCMultiverse.Data;
 using MCMultiverse.Models.Application;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using MCMultiverse.Models;
 
 namespace MCMultiverse.Controllers
 {
     public class MCServersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAuthorizationService _authorizationService;
 
-        public MCServersController(ApplicationDbContext context)
+        public MCServersController(
+            IAuthorizationService authorizationService,
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+            _authorizationService = authorizationService;
         }
 
         // GET: MCServers
@@ -70,20 +79,31 @@ namespace MCMultiverse.Controllers
         // GET: MCServers/Edit/5
 
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin",Policy = "IsOwner")]
         public async Task<IActionResult> Edit(int? id)
         {
+            var mCServer = await _context.MCServers.SingleOrDefaultAsync(m => m.Id == id);
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var mCServer = await _context.MCServers.SingleOrDefaultAsync(m => m.Id == id);
             if (mCServer == null)
             {
                 return NotFound();
             }
-            return View(mCServer);
+
+            AuthorizationResult authResult = _authorizationService.AuthorizeAsync(User, mCServer, "IsOwner");
+
+            if (authResult.Succeded)
+            {
+                return View(mCServer);
+            }
+            else
+            {
+                return new ForbidResult();
+            }
+
         }
 
         // POST: MCServers/Edit/5
@@ -152,6 +172,16 @@ namespace MCMultiverse.Controllers
             _context.MCServers.Remove(mCServer);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost, ActionName("Favorite")]
+        [Authorize]
+        public async Task<IActionResult> FavoriteAsync(int mCServerId)
+        {
+            FavoritesController favcontroller = new FavoritesController(_context,_userManager);
+            await favcontroller.Create(mCServerId);
+
+            return StatusCode(200);
         }
 
         private bool MCServerExists(int id)
