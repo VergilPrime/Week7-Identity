@@ -93,9 +93,9 @@ namespace MCMultiverse.Controllers
                 return NotFound();
             }
 
-            AuthorizationResult authResult = _authorizationService.AuthorizeAsync(User, mCServer, "IsOwner");
+            AuthorizationResult authResult = await _authorizationService.AuthorizeAsync(User, mCServer, "IsOwner");
 
-            if (authResult.Succeded)
+            if (authResult.Succeeded)
             {
                 return View(mCServer);
             }

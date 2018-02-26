@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MCMultiverse.Authorization.Handlers
 {
-    public class OwnerReqHandler : AuthorizationHandler<OwnerRequirement,MCServer>
+    public class OwnerReqHandler : AuthorizationHandler<OwnerRequirement, MCServer>
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -19,28 +19,20 @@ namespace MCMultiverse.Authorization.Handlers
             _userManager = userManager;
         }
 
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, OwnerRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, OwnerRequirement requirement, MCServer resource)
         {
-            ApplicationUser user = await _userManager.GetUserAsync(User);
-            int mCServerId = context
-            Services.
-            if(server.Owner.Id == user.Id)
-            {
+            Task<ApplicationUser> task = _userManager.GetUserAsync(context.User);
 
-            }
-        }
+            task.Wait();
 
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, OwnerRequirement requirement, MCServer mCServer)
-        {
-            ApplicationUser user = await _userManager.GetUserAsync(context.User);
-            if(mCServer.Owner.Id != user.Id && !context.User.IsInRole("Admin"))
-            {
-                context.Fail();
-            }
-            else
+            ApplicationUser user = task.Result;
+
+            if (resource.Owner.Id == user.Id || context.User.IsInRole("Admin"))
             {
                 context.Succeed(requirement);
             }
+
+            var completedTask = Task.CompletedTask;
 
             return Task.CompletedTask;
         }
