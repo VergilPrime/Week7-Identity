@@ -85,12 +85,12 @@ namespace MCMultiverse.Controllers
 
             if (id == null)
             {
-                return NotFound();
+                return StatusCode(418);
             }
 
             if (mCServer == null)
             {
-                return NotFound();
+                return StatusCode(418);
             }
 
             AuthorizationResult authResult = await _authorizationService.AuthorizeAsync(User, mCServer, "IsOwner");
