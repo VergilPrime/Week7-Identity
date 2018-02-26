@@ -61,7 +61,7 @@ namespace MCMultiverse.Data
                 .WithOne(image => image.MCServer);
 
             builder.Entity<MCServer>()
-                .HasOne<ApplicationUser>(server => server.Owner)
+                .HasOne(server => server.Owner)
                 .WithMany(user => user.Servers);
 
 

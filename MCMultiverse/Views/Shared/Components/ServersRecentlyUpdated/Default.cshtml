@@ -7,11 +7,12 @@
     </p>
 </div>
 <ul>
-    @foreach (var item in Model)
+    @foreach (var item in (IEnumerable<MCMultiverse.Models.Application.MCServer>)Model)
     {
         <li class="container, server-list">
             <div class="row">
                 <div class="col-sm-12">
+                    @*<a asp-controller="MCServers" asp-action="Details" asp-route-id="@item.Id">*@
                     <a asp-controller="MCServers" asp-action="Details" asp-route-id="@item.Id">
                         @if (item.BannerSmall != null)
                         {

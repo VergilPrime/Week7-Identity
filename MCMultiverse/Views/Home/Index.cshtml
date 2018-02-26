@@ -7,5 +7,5 @@
                                  filter="updated">
     </vc:servers-recently-updated>*@
 <div id="mcserverlist">
-    @await Component.InvokeAsync("ServersRecentlyUpdated", new { page = 1, count = 1, filter = "updated" })
+    @await Component.InvokeAsync("ServersRecentlyUpdated", new { page = 1, count = 25, filter = "updated" })
 </div>

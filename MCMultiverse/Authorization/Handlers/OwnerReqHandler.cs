@@ -27,7 +27,11 @@ namespace MCMultiverse.Authorization.Handlers
 
             ApplicationUser user = task.Result;
 
-            if (resource.Owner.Id == user.Id || context.User.IsInRole("Admin"))
+            if (resource.Owner == null)
+            {
+                context.Succeed(requirement);
+            }
+            else if (resource.Owner.Id == user.Id || context.User.IsInRole("Admin"))
             {
                 context.Succeed(requirement);
             }

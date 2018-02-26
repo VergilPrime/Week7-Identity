@@ -69,6 +69,8 @@ namespace MCMultiverse.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
+                mCServer.Owner = user;
                 _context.Add(mCServer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -77,20 +79,19 @@ namespace MCMultiverse.Controllers
         }
 
         // GET: MCServers/Edit/5
-
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Edit(int? id)
         {
-            var mCServer = await _context.MCServers.SingleOrDefaultAsync(m => m.Id == id);
+            var mCServer = await _context.MCServers.Include(m => m.Owner).SingleOrDefaultAsync(m => m.Id == id);
 
             if (id == null)
             {
-                return StatusCode(418);
+                return StatusCode(300);
             }
 
             if (mCServer == null)
             {
-                return StatusCode(418);
+                return StatusCode(300);
             }
 
             AuthorizationResult authResult = await _authorizationService.AuthorizeAsync(User, mCServer, "IsOwner");
@@ -111,7 +112,6 @@ namespace MCMultiverse.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin", Policy = "IsOwner")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Address,Activity,Updated,LastPinged,LastPingedOnline,BannerSmall,BannerSmallContentType,BannerLarge,BannerLargeContentType")] MCServer mCServer)
         {
             if (id != mCServer.Id)
@@ -143,8 +143,6 @@ namespace MCMultiverse.Controllers
         }
 
         // GET: MCServers/Delete/5
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin", Policy = "IsOwner")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -165,7 +163,6 @@ namespace MCMultiverse.Controllers
         // POST: MCServers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin", Policy = "IsOwner")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var mCServer = await _context.MCServers.SingleOrDefaultAsync(m => m.Id == id);
