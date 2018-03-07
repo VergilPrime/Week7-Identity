@@ -69,17 +69,38 @@ namespace MCMultiverse.Controllers
         {
             if (ModelState.IsValid)
             {
+                var bannerSmall = mCServer.BannerSmall;
+                var bannerLarge = mCServer.BannerLarge;
+                mCServer.BannerSmall = null;
+                mCServer.BannerLarge = null;
+
                 ApplicationUser user = await _userManager.GetUserAsync(User);
                 mCServer.Owner = user;
                 _context.Add(mCServer);
                 await _context.SaveChangesAsync();
+
+                Task<MCServer> task = _context.MCServers.FirstOrDefaultAsync(server => server.Address == mCServer.Address);
+
+                task.Wait();
+
+                int serverId = task.Result.Id;
+
+                //if (bannerSmall != null) {
+                //    Services.AzureImageService.UploadBlob(serverId.ToString() + "_BannerSmall", bannerSmall);
+                //}
+
+                //if (bannerLarge != null)
+                //{
+                //    Services.AzureImageService.UploadBlob(serverId.ToString() + "_BannerLarge", bannerLarge);
+                //}
+
                 return RedirectToAction(nameof(Index));
             }
             return View(mCServer);
         }
 
         // GET: MCServers/Edit/5
-        
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             var mCServer = await _context.MCServers.Include(m => m.Owner).SingleOrDefaultAsync(m => m.Id == id);
@@ -112,6 +133,7 @@ namespace MCMultiverse.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Address,Activity,Updated,LastPinged,LastPingedOnline,BannerSmall,BannerSmallContentType,BannerLarge,BannerLargeContentType")] MCServer mCServer)
         {
             if (id != mCServer.Id)
@@ -119,45 +141,66 @@ namespace MCMultiverse.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var mCServer_ = await _context.MCServers.Include(m => m.Owner).SingleOrDefaultAsync(m => m.Id == id);
+
+            AuthorizationResult authResult = await _authorizationService.AuthorizeAsync(User, mCServer_, "IsOwner");
+
+            if (authResult.Succeeded)
             {
-                try
+                if (ModelState.IsValid)
                 {
-                    _context.Update(mCServer);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MCServerExists(mCServer.Id))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(mCServer);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!MCServerExists(mCServer.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                return View(mCServer);
             }
-            return View(mCServer);
+            else
+            {
+                return new ForbidResult();
+            }
         }
 
         // GET: MCServers/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new BadRequestResult();
             }
 
             var mCServer = await _context.MCServers
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (mCServer == null)
             {
-                return NotFound();
+                return new NotFoundResult();
             }
 
-            return View(mCServer);
+            AuthorizationResult authResult = await _authorizationService.AuthorizeAsync(User, mCServer, "IsOwner");
+
+            if (authResult.Succeeded)
+            {
+                return View(mCServer);
+            }
+            else
+            {
+                return new ForbidResult();
+            }
         }
 
         // POST: MCServers/Delete/5
@@ -165,17 +208,27 @@ namespace MCMultiverse.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mCServer = await _context.MCServers.SingleOrDefaultAsync(m => m.Id == id);
-            _context.MCServers.Remove(mCServer);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var mCServer = await _context.MCServers.Include(m => m.Owner).SingleOrDefaultAsync(m => m.Id == id);
+
+            AuthorizationResult authResult = await _authorizationService.AuthorizeAsync(User, mCServer, "IsOwner");
+
+            if (authResult.Succeeded)
+            {
+                _context.MCServers.Remove(mCServer);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return new ForbidResult();
+            }
         }
 
         [HttpPost, ActionName("Favorite")]
         [Authorize]
         public async Task<IActionResult> FavoriteAsync(int mCServerId)
         {
-            FavoritesController favcontroller = new FavoritesController(_context,_userManager);
+            FavoritesController favcontroller = new FavoritesController(_context, _userManager);
             await favcontroller.Create(mCServerId);
 
             return StatusCode(200);
