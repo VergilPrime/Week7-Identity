@@ -100,25 +100,23 @@ namespace MCMultiverse.Controllers
         // POST: Blob/Upload
         public IActionResult Display()
         {
-            try
-            {
+            //try
+            //{
                 CloudBlockBlob blob = _azureBlobContainer.GetBlockBlobReference("Blobbathy");
 
                 //byte[] img = new byte[500000];
 
                 //Task task = blob.DownloadToByteArrayAsync(img, 1);
 
-                Task task = blob.DownloadToFileAsync("ReturnKitty.png", new FileMode());
-
-                task.Wait();
+                blob.DownloadToFileAsync("ReturnKitty.png", new FileMode());
 
                 return RedirectToAction("Index", "Blob");
 
-            }
-            catch
-            {
-                return View();
-            }
+            //}
+            //catch
+            //{
+            //    return View();
+            //}
         }
 
         // POST: Blob/Delete/5
