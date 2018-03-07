@@ -1,7 +1,8 @@
 ﻿@model List<string>;
 
-
-@foreach(string name in Model)
-{
-    <p>@name</p>
-}
+<ul>
+    @foreach(string name in Model)
+    {
+        <li>@name</li>
+    }
+</ul>
