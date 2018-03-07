@@ -30,8 +30,13 @@ namespace MCMultiverse.Controllers
         {
             ApplicationUser user = await _userManager.GetUserAsync(User);
 
-            var applicationDbContext = _context.Favorites.Include(f => f.ApplicationUser).Where(f => f.ApplicationUser == user).Include(f => f.MCServer);
-            return View(await applicationDbContext.ToListAsync());
+            string userId = user.Id;
+            
+
+            var favorites = _context.Favorites
+                .Where(favorite => favorite.ApplicationUserId == userId)
+                .Select(favorite => favorite.MCServer);
+            return View(favorites);
         }
 
         // POST: Favorites/Create

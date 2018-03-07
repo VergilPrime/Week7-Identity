@@ -1,4 +1,5 @@
 ﻿@model MCMultiverse.Models.Application.MCServer
+@using MCMultiverse.Models.Application
 
 @{
     ViewData["Title"] = "Details";
@@ -9,60 +10,23 @@
 <div>
     <h4>MCServer</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dd>
-            @if(Model.BannerLarge != null)
-            {
-                @Html.DisplayFor(model => model.BannerLarge)
-            }
-            else
-            {
-                <img src="http://via.placeholder.com/468x60"/>
-            }
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Activity)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Activity)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LastPinged)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastPinged)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LastPingedOnline)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastPingedOnline)
-        </dd>
-    </dl>
+    @if (Model.BannerLarge != null)
+    {
+        @Html.DisplayFor(model => model.BannerLarge)
+    }
+    else
+    {
+        <img src="http://via.placeholder.com/468x60" />
+    }
+    @Html.DisplayNameFor(model => model.Title)
+    @Html.DisplayFor(model => model.Title)
+    @Html.DisplayNameFor(model => model.Description)
+    @Html.DisplayFor(model => model.Description)
+    @Html.DisplayNameFor(model => model.Address)
+    @Html.DisplayFor(model => model.Address)
+
+    <a href="https://localhost:44311/MCServers/Favorite/@Model.Id">Favorite</a>
+    @*@Html.ActionLink("Favorite", "Favorite", "MCServers", Model.Id)*@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |

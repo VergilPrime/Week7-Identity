@@ -230,7 +230,7 @@ namespace MCMultiverse.Controllers
                     //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     //await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-                    //await _userManager.AddClaimAsync(user, new Claim("DonorRank", "3", "integer"));
+                    await _userManager.AddClaimAsync(user, new Claim("DonorRank", "3", "integer"));
                     await _userManager.AddClaimAsync(user, new Claim("TotalDonations", "0", ClaimValueTypes.Integer));
 
                     await _userManager.AddToRoleAsync(user, "Member");
